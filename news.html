@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USINDH News</title>
+  <link rel="shortcut icon" href="Images/wall.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile-fixes.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header>
+    <div class="logo__header">
+      <img class="logo" src="Images/U.png" alt="USINDH" />
+    </div>
+    <button class="nav-toggle" aria-label="Open navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="mainNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="news.html" class="active">News</a></li>
+        <li><a href="#">Tests</a></li>
+        <li><a href="#">About</a></li>
+        <li class="btn"><a href="#">Login</a></li>
+        <li class="btn"><a href="#">Signup</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="news-section news-old">
+      <h1>Latest News</h1>
+
+      <div id="news-container" class="news-cards"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

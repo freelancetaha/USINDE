@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Protected Index Page</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile-fixes.css">
+  <!-- Clerk JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-sdk-browser@latest/dist/clerk.browser.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo__header">
+          <!-- <h1>USINDH</h1> -->
+          <img class="logo" src="Images/U.png" alt="USINDH">
+        </div>
+        <button class="nav-toggle" aria-label="Open navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+         <nav id="mainNav">
+             <ul>
+                 <li><a href="index.html">Home</a></li>
+                 <li><a href="news.html">News</a></li>
+                 <li><a href="tests.html">Tests</a></li>
+                 <li><a href="#">About</a></li>
+                 <li><button id="login-btn" class="btn">Login</button></li>
+                 <li><button id="signup-btn" class="btn">Signup</button></li>                
+                 <button id="sign-out">Sign Out</button>
+             </ul>
+         </nav>
+     </header>
+  <!-- Placeholder for Clerk Sign In / Sign Up -->
+  <div id="clerk-sign-in"></div>
+
+  <!-- Protected content -->
+  <div id="protected-content" style="display: none;">
+    <h1>Welcome, <span id="user-name"></span>!</h1>
+    <p>Your secure data goes here.</p>
+  </div>
+
+  <!-- Our app logic -->
+  <script src="app.js"></script>
+</body>
+</html>
