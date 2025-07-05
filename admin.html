@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - USINDH</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile-fixes.css">
+  <link rel="shortcut icon" href="Images/wall.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo__header">
+          <img class="logo" src="Images/U.png" alt="USINDH">
+        </div>
+        <button class="nav-toggle" aria-label="Open navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+         <nav id="mainNav">
+             <ul>
+                 <li><a href="index.html">Home</a></li>
+                 <li><a href="news.html">News</a></li>
+                 <li><a href="tests.html">Tests</a></li>
+                 <li><a href="about.html">About</a></li>
+                 <li><a href="admin.html" class="active">Admin</a></li>
+             </ul>
+         </nav>
+         <button id="admin-login-btn" class="btn" style="margin-left:16px;">Admin Login</button>
+     </header>
+     
+  <main class="admin-main">
+    <section class="admin-hero">
+      <h1>Admin Panel</h1>
+      <p>Manage tests, questions, and website content</p>
+    </section>
+    
+    <!-- Admin Panel (hidden by default) -->
+    <section id="admin-panel" style="display:none; margin-top:40px; width:100%; max-width:700px;">
+      <h2>Admin Panel: Edit Tests & Questions</h2>
+      <div id="admin-tests-list"></div>
+      <div id="admin-test-results" style="margin-top:30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">User Test Results</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="results-search" placeholder="Search by name, phone, or test..." style="padding:8px; border:1px solid #ddd; border-radius:4px; width:250px; min-width:200px;">
+            <button id="refresh-results-btn" class="btn" style="background:#17a2b8; font-size:0.9rem; padding:8px 16px;">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button id="export-results-btn" class="btn" style="background:#28a745; font-size:0.9rem; padding:8px 16px;">
+              <i class="fas fa-download"></i> Export CSV
+            </button>
+            <button id="show-user-stats-btn" class="btn" style="background:#6f42c1; font-size:0.9rem; padding:8px 16px;">
+              <i class="fas fa-chart-bar"></i> User Stats
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Users Who Submitted Tests Section -->
+      <section id="submitted-users-section" style="margin-top:20px; width:100%; max-width:700px;">
+        <h3 style="font-size:1.1rem; margin-bottom:8px;">Users Who Submitted Tests</h3>
+        <div id="submitted-users-list" style="background:#f8f9fa; border-radius:8px; padding:10px 15px; font-size:0.98rem;"></div>
+      </section>
+      
+      <!-- User Statistics Section -->
+      <div id="user-stats-section" style="display:none; margin-top:30px; padding:20px; background:#f8f9fa; border-radius:8px;">
+        <h3>User Statistics</h3>
+        <div id="user-stats-content"></div>
+      </div>
+      <hr/>
+      <h3>Set Test Timing</h3>
+      <form id="admin-set-timing-form">
+        <label>Test:
+          <select id="admin-timing-test-select"></select>
+        </label><br><br>
+        <label>Start Time:
+          <input type="datetime-local" id="admin-start-time">
+        </label><br><br>
+        <label>End Time:
+          <input type="datetime-local" id="admin-end-time">
+        </label><br><br>
+        <button type="submit" class="btn">Save Timing</button>
+      </form>
+      <hr/>
+      <h3>Add New Question</h3>
+      <form id="admin-add-question-form">
+        <label>Test:
+          <select id="admin-test-select"></select>
+        </label><br><br>
+        <label>Question:<br>
+          <input type="text" id="admin-question" required style="width:90%;">
+        </label><br><br>
+        <label>Option 1: <input type="text" id="admin-opt1" required></label><br>
+        <label>Option 2: <input type="text" id="admin-opt2" required></label><br>
+        <label>Option 3: <input type="text" id="admin-opt3" required></label><br>
+        <label>Correct Option:
+          <select id="admin-correct">
+            <option value="0">Option 1</option>
+            <option value="1">Option 2</option>
+            <option value="2">Option 3</option>
+          </select>
+        </label><br><br>
+        <button type="submit" class="btn">Add Question</button>
+      </form>
+      <hr/>
+      <button id="admin-logout-btn" class="btn" style="background:#f73838; margin-top:20px;">Admin Logout</button>
+      <!-- Registered Users Section -->
+      <section id="admin-users-section" style="margin-top:40px; width:100%; max-width:700px;">
+        <h2>Registered Users</h2>
+        <div id="admin-users-list"></div>
+      </section>
+    </section>
+    
+    <!-- Login Required Message -->
+    <section id="login-required" style="text-align: center; margin-top: 100px;">
+      <h2>Admin Access Required</h2>
+      <p>Please login to access the admin panel.</p>
+      <button id="login-prompt-btn" class="btn" style="margin-top: 20px;">Login Now</button>
+      <button id="signup-prompt-btn" class="btn" style="margin-top: 10px; background:#28a745;">Sign Up Admin</button>
+    </section>
+    
+    <!-- Admin Signup Section (hidden by default) -->
+    <section id="admin-signup-section" style="display:none; margin-top:40px; width:100%; max-width:500px;">
+      <h2>Create Admin Account</h2>
+      <form id="admin-signup-form">
+        <label>Email:
+          <input type="email" id="signup-email" required>
+        </label><br><br>
+        <label>Password:
+          <input type="password" id="signup-password" required minlength="6">
+        </label><br><br>
+        <label>Confirm Password:
+          <input type="password" id="signup-confirm-password" required minlength="6">
+        </label><br><br>
+        <button type="submit" class="btn">Create Admin Account</button>
+        <button type="button" id="cancel-signup" class="btn" style="background:#6c757d; margin-left:10px;">Cancel</button>
+      </form>
+    </section>
+    
+    <!-- Debug Section (hidden by default) -->
+    <section id="debug-section" style="display:none; margin-top:40px; width:100%; max-width:700px; background:#f8f9fa; padding:20px; border-radius:8px;">
+      <h3>Firebase Debug Information</h3>
+      <div id="debug-info"></div>
+      <button id="test-firestore-btn" class="btn" style="margin-top:10px;">Test Firestore Connection</button>
+      <button id="create-test-data-btn" class="btn" style="margin-top:10px; background:#28a745;">Create Test Data</button>
+    </section>
+  </main>
+
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> 

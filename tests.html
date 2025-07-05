@@ -6,8 +6,9 @@
   <title>Protected Index Page</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="mobile-fixes.css">
-  <!-- Clerk JS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-sdk-browser@latest/dist/clerk.browser.js"></script>
+  <link rel="stylesheet" href="modal.css">
+  <link rel="shortcut icon" href="Images/wall.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -23,23 +24,70 @@
                  <li><a href="index.html">Home</a></li>
                  <li><a href="news.html">News</a></li>
                  <li><a href="tests.html">Tests</a></li>
-                 <li><a href="#">About</a></li>
-                 <li><button id="login-btn" class="btn">Login</button></li>
-                 <li><button id="signup-btn" class="btn">Signup</button></li>                
-                 <button id="sign-out">Sign Out</button>
+                 <li><a href="about.html">About</a></li>
              </ul>
          </nav>
      </header>
-  <!-- Placeholder for Clerk Sign In / Sign Up -->
-  <div id="clerk-sign-in"></div>
-
-  <!-- Protected content -->
-  <div id="protected-content" style="display: none;">
-    <h1>Welcome, <span id="user-name"></span>!</h1>
-    <p>Your secure data goes here.</p>
+     
+  <main class="tests-main">
+    <section class="tests-hero">
+      <h1>Practice Tests & Mock Exams</h1>
+      <p>Sharpen your skills with our free practice tests and mock exams for university entrance and more!</p>
+    </section>
+    <!-- User Auth Section -->
+    <section id="user-auth-section" style="max-width:400px;margin:0 auto 30px auto;">
+      <div id="user-auth-forms">
+        <form id="user-login-form">
+          <h3>Login</h3>
+          <input type="email" id="user-login-email" placeholder="Email" required style="width:100%;margin-bottom:8px;">
+          <input type="password" id="user-login-password" placeholder="Password" required style="width:100%;margin-bottom:8px;">
+          <button type="submit" class="btn" style="width:100%;">Login</button>
+          <p style="margin:10px 0 0 0;">Don't have an account? <a href="#" id="show-signup-link">Sign up</a></p>
+        </form>
+        <form id="user-signup-form" style="display:none;">
+          <h3>Sign Up</h3>
+          <input type="text" id="user-signup-name" placeholder="Full Name" required style="width:100%;margin-bottom:8px;">
+          <input type="email" id="user-signup-email" placeholder="Email" required style="width:100%;margin-bottom:8px;">
+          <input type="tel" id="user-signup-phone" placeholder="Phone Number" required style="width:100%;margin-bottom:8px;">
+          <label style="display:block;margin-bottom:8px;">ID Card Front (Image):
+            <input type="file" id="user-signup-id-front" accept="image/*" required style="width:100%;">
+          </label>
+          <label style="display:block;margin-bottom:8px;">ID Card Back (Image):
+            <input type="file" id="user-signup-id-back" accept="image/*" required style="width:100%;">
+          </label>
+          <input type="password" id="user-signup-password" placeholder="Password" required style="width:100%;margin-bottom:8px;">
+          <input type="password" id="user-signup-confirm" placeholder="Confirm Password" required style="width:100%;margin-bottom:8px;">
+          <button type="submit" class="btn" style="width:100%;">Sign Up</button>
+          <p style="margin:10px 0 0 0;">Already have an account? <a href="#" id="show-login-link">Login</a></p>
+        </form>
+      </div>
+      <div id="user-info" style="display:none;text-align:center;margin-top:10px;">
+        <span id="user-email"></span>
+        <button id="user-logout-btn" class="btn" style="margin-left:10px;background:#f73838;">Logout</button>
+      </div>
+    </section>
+    <section class="tests-list">
+      <ul id="tests-list-ul"></ul>
+      <div class="cta-tests">
+        <a href="#" class="btn">Start Your First Test</a>
+      </div>
+    </section>
+  </main>
+  <!-- Test Modal -->
+  <div id="test-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-test-modal">&times;</span>
+      <h2 id="test-title">Test</h2>
+      <form id="quiz-form"></form>
+      <div id="quiz-result" style="display:none; margin-top:1em; font-size:1.2rem; font-weight:600; color:#1838eb; text-align:center;"></div>
+    </div>
   </div>
 
-  <!-- Our app logic -->
-  <script src="app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
